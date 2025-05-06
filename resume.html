@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free AI-powered resume and cover letter builder. Create professional resumes and tailored cover letters in minutes with our easy-to-use tool.">
+    <meta name="keywords" content="resume builder, cover letter generator, AI resume, professional resume, job application tools, free resume maker">
+    <meta name="author" content="AI Resume Builder">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="AI-Powered Resume & Cover Letter Builder">
+    <meta property="og:description" content="Create professional resumes and tailored cover letters in minutes with our free AI-powered tool.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourwebsite.com/resume-builder">
+    <meta property="og:image" content="https://yourwebsite.com/images/resume-builder-preview.jpg">
+    <link rel="canonical" href="https://yourwebsite.com/resume-builder">
+    
+    <title>AI-Powered Resume & Cover Letter Builder | Free Professional Resume Creator</title>
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "AI-Powered Resume & Cover Letter Builder",
+      "description": "Free tool to create professional resumes and tailored cover letters using AI technology",
+      "url": "https://yourwebsite.com/resume-builder",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+    
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .template-preview {
+            cursor: pointer;
+            transition: transform 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .template-preview:hover {
+            transform: translateY(-5px);
+        }
+        
+        .template-preview.active {
+            border-color: #4f46e5;
+        }
+        
+        .preview-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        .tab-button {
+            padding: 10px 20px;
+            background-color: #f3f4f6;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .tab-button.active {
+            background-color: #4f46e5;
+            color: white;
+        }
+        
+        .image-upload-container {
+            width: 150px;
+            height: 150px;
+            border: 2px dashed #ccc;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .image-upload-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .image-upload-container .upload-icon {
+            position: absolute;
+            font-size: 30px;
+            color: #ccc;
+        }
+        
+        .preview-box {
+            display: none;
+        }
+        
+        .preview-box.active {
+            display: block;
+        }
+        
+        /* Resume Templates */
+        .resume-template {
+            font-family: 'Roboto', sans-serif;
+            margin: 0 auto;
+            max-width: 800px;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Stockholm Template */
+        .stockholm {
+            color: #333;
+        }
+        
+        .stockholm .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .stockholm .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            margin-right: 30px;
+        }
+        
+        .stockholm .content {
+            padding: 30px;
+        }
+        
+        .stockholm h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 5px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+        
+        /* Toronto Template */
+        .toronto {
+            display: flex;
+            color: #333;
+        }
+        
+        .toronto .sidebar {
+            width: 35%;
+            background-color: #3498db;
+            color: white;
+            padding: 30px;
+        }
+        
+        .toronto .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            margin: 0 auto 20px;
+            display: block;
+        }
+        
+        .toronto .main-content {
+            width: 65%;
+            padding: 30px;
+        }
+        
+        .toronto h2 {
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+        
+        /* London Template */
+        .london {
+            color: #333;
+        }
+        
+        .london .header {
+            background-color: #f1c40f;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .london .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            margin: 0 auto 20px;
+            display: block;
+        }
+        
+        .london .content {
+            padding: 30px;
+        }
+        
+        .london h2 {
+            color: #f1c40f;
+            border-bottom: 2px solid #f1c40f;
+            padding-bottom: 5px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+        
+        /* Colorful Template */
+        .colorful {
+            color: #333;
+        }
+        
+        .colorful .header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .colorful .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            margin-right: 30px;
+        }
+        
+        .colorful .content {
+            padding: 30px;
+        }
+        
+        .colorful h2 {
+            color: #6a11cb;
+            border-bottom: 2px solid #6a11cb;
+            padding-bottom: 5px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+        
+        /* Cover Letter Templates */
+        .cover-letter {
+            font-family: 'Roboto', sans-serif;
+            margin: 0 auto;
+            max-width: 800px;
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cover-letter h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .cover-letter .sender-info {
+            margin-bottom: 30px;
+        }
+        
+        .cover-letter .date {
+            margin-bottom: 30px;
+        }
+        
+        .cover-letter .recipient-info {
+            margin-bottom: 30px;
+        }
+        
+        .cover-letter .content {
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+        
+        .cover-letter .signature {
+            margin-top: 40px;
+        }
+        
+        /* Button Styles */
+        .action-button {
+            background-color: #4f46e5;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .action-button:hover {
+            background-color: #4338ca;
+        }
+        
+        /* RTL support for Urdu */
+        .urdu {
+            direction: rtl;
+            text-align: right;
+            font-family: 'Noto Nastaliq Urdu', serif;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* For editable content */
+        [contenteditable] {
+            outline: none;
+            border: 1px dashed transparent;
+            padding: 5px;
+            transition: border-color 0.3s;
+        }
+        
+        [contenteditable]:hover {
+            border-color: #4f46e5;
+        }
+        
+        [contenteditable]:focus {
+            border-color: #4f46e5;
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+        
+        /* Breadcrumb for better SEO */
+        .breadcrumb {
+            padding: 15px 0;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #4f46e5;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        /* FAQ Section for SEO */
+        .faq-section {
+            margin: 40px 0;
+            background: #f8fafc;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+        }
+        
+        .faq-question {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Breadcrumb for better SEO -->
+        <div class="breadcrumb">
+            <a href="https://yourwebsite.com">Home</a> &gt; 
+            <a href="https://yourwebsite.com/tools">Tools</a> &gt; 
+            <span>Resume Builder</span>
+        </div>
+        
+        <h1 class="text-3xl font-bold text-center mb-6 text-indigo-700 mt-2">AI-Powered Resume & Cover Letter Builder</h1>
+        <p class="text-center text-gray-600 mb-10">Create professional resumes and tailored cover letters in minutes with our free AI-powered tool.</p>
+        
+        <div class="form-container">
+            <h2 class="text-xl font-semibold mb-6">Personal Information</h2>
+            
+            <div class="mb-6">
+                <div class="image-upload-container" id="imageUploadContainer">
+                    <i class="fas fa-cloud-upload-alt upload-icon" id="uploadIcon"></i>
+                    <img id="profileImagePreview" class="hidden" alt="Profile picture preview">
+                </div>
+                <input type="file" id="profileImageInput" class="hidden" accept="image/*">
+                <div class="text-center mt-2">
+                    <button id="uploadImageButton" class="text-indigo-600 hover:text-indigo-800">Upload Profile Picture</button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <input type="text" id="fullName" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="John Doe">
+                </div>
+                
+                <div>
+                    <label for="jobTitle" class="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
+                    <input type="text" id="jobTitle" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Software Engineer">
+                </div>
+                
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <input type="email" id="email" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="john.doe@example.com">
+                </div>
+                
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <input type="tel" id="phone" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="(123) 456-7890">
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label for="workExperience" class="block text-sm font-medium text-gray-700 mb-1">Work Experience</label>
+                <textarea id="workExperience" rows="4" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Example: Marketing Manager at XYZ Company (2018-2022)&#10;- Led a team of 5 marketing professionals&#10;- Increased sales by 25% through digital marketing campaigns"></textarea>
+            </div>
+            
+            <div class="mb-6">
+                <label for="education" class="block text-sm font-medium text-gray-700 mb-1">Education</label>
+                <textarea id="education" rows="3" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Example: Bachelor of Science in Computer Science&#10;University of Technology (2014-2018)&#10;GPA: 3.8/4.0"></textarea>
+            </div>
+            
+            <div class="mb-6">
+                <label for="skills" class="block text-sm font-medium text-gray-700 mb-1">Skills (comma-separated)</label>
+                <input type="text" id="skills" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Example: JavaScript, HTML, CSS, Project Management, Team Leadership">
+            </div>
+            
+            <div class="mb-6">
+                <label for="jobDescription" class="block text-sm font-medium text-gray-700 mb-1">Job Description (Optional - for Cover Letter)</label>
+                <textarea id="jobDescription" rows="3" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Paste the job description here to tailor your cover letter"></textarea>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Language Preference</label>
+                <div class="flex space-x-4">
+                    <div class="flex items-center">
+                        <input type="radio" id="langEnglish" name="language" value="english" class="mr-2" checked>
+                        <label for="langEnglish">English</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="radio" id="langUrdu" name="language" value="urdu" class="mr-2">
+                        <label for="langUrdu">Urdu</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-container">
+            <h2 class="text-xl font-semibold mb-6">Choose a Template</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="template-preview active" data-template="stockholm">
+                    <div class="h-40 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <div class="w-full h-full bg-blue-900 flex flex-col items-center justify-center text-white text-xs">
+                            <div class="rounded-full bg-gray-200 h-12 w-12 mb-2"></div>
+                            <div class="h-2 w-20 bg-white mb-2"></div>
+                            <div class="h-1 w-16 bg-white"></div>
+                            <div class="mt-4 w-full px-4">
+                                <div class="h-1 w-full bg-blue-700 mb-1"></div>
+                                <div class="h-1 w-full bg-gray-200 mb-1"></div>
+                                <div class="h-1 w-full bg-gray-200 mb-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-2 text-center font-medium">Stockholm</p>
+                </div>
+                
+                <div class="template-preview" data-template="toronto">
+                    <div class="h-40 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <div class="w-full h-full flex">
+                            <div class="bg-blue-500 w-1/3 flex flex-col items-center pt-4 text-white text-xs">
+                                <div class="rounded-full bg-gray-200 h-12 w-12 mb-2"></div>
+                                <div class="h-1 w-16 bg-white mb-1"></div>
+                                <div class="h-1 w-12 bg-white"></div>
+                            </div>
+                            <div class="w-2/3 p-4">
+                                <div class="h-2 w-20 bg-blue-500 mb-2"></div>
+                                <div class="h-1 w-full bg-gray-300 mb-1"></div>
+                                <div class="h-1 w-full bg-gray-300 mb-1"></div>
+                                <div class="h-1 w-3/4 bg-gray-300"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-2 text-center font-medium">Toronto</p>
+                </div>
+                
+                <div class="template-preview" data-template="london">
+                    <div class="h-40 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <div class="w-full h-full flex flex-col">
+                            <div class="bg-yellow-400 h-1/3 flex items-center justify-center">
+                                <div class="rounded-full bg-gray-200 h-10 w-10"></div>
+                            </div>
+                            <div class="p-4">
+                                <div class="h-2 w-20 bg-yellow-400 mb-2"></div>
+                                <div class="h-1 w-full bg-gray-300 mb-1"></div>
+                                <div class="h-1 w-full bg-gray-300 mb-1"></div>
+                                <div class="h-1 w-3/4 bg-gray-300"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-2 text-center font-medium">London</p>
+                </div>
+                
+                <div class="template-preview" data-template="colorful">
+                    <div class="h-40 bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <div class="w-full h-full flex flex-col">
+                            <div class="bg-gradient-to-r from-purple-800 to-blue-500 h-1/3 flex items-center p-2">
+                                <div class="rounded-full bg-gray-200 h-10 w-10 mr-2"></div>
+                                <div>
+                                    <div class="h-2 w-16 bg-white mb-1"></div>
+                                    <div class="h-1 w-12 bg-white"></div>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="h-2 w-20 bg-purple-800 mb-2"></div>
+                                <div class="h-1 w-full bg-gray-300 mb-1"></div>
+                                <div class="h-1 w-full bg-gray-300 mb-1"></div>
+                                <div class="h-1 w-3/4 bg-gray-300"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-2 text-center font-medium">Colorful</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex justify-center mb-6">
+            <button id="generateButton" class="action-button text-lg px-8 py-3">Generate Resume & Cover Letter</button>
+        </div>
+        
+        <div id="previewSection" class="hidden">
+            <div class="flex mb-4">
+                <button class="tab-button active" data-tab="resumePreview">Resume Preview</button>
+                <button class="tab-button" data-tab="coverLetterPreview">Cover Letter Preview</button>
+            </div>
+            
+            <div class="preview-container mb-8">
+                <div id="resumePreview" class="preview-box active">
+                    <!-- Stockholm Template (Default) -->
+                    <div id="stockholmTemplate" class="resume-template stockholm">
+                        <div class="header">
+                            <img id="stockholmProfileImg" class="profile-img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="Profile Image">
+                            <div>
+                                <h1 class="text-2xl font-bold fullName-field">Your Name</h1>
+                                <p class="text-xl jobTitle-field">Your Job Title</p>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="mb-6">
+                                <p><i class="fas fa-envelope mr-2"></i><span class="email-field">email@example.com</span></p>
+                                <p><i class="fas fa-phone mr-2"></i><span class="phone-field">123-456-7890</span></p>
+                            </div>
+                            
+                            <h2>Work Experience</h2>
+                            <div class="workExperience-field mb-6">
+                                <p>Your work experience will appear here.</p>
+                            </div>
+                            
+                            <h2>Education</h2>
+                            <div class="education-field mb-6">
+                                <p>Your education will appear here.</p>
+                            </div>
+                            
+                            <h2>Skills</h2>
+                            <div class="skills-field">
+                                <p>Your skills will appear here.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Toronto Template -->
+                    <div id="torontoTemplate" class="resume-template toronto hidden">
+                        <div class="sidebar">
+                            <img id="torontoProfileImg" class="profile-img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="Profile Image">
+                            <h1 class="text-xl font-bold mb-4 fullName-field">Your Name</h1>
+                            <p class="text-lg mb-4 jobTitle-field">Your Job Title</p>
+                            
+                            <div class="mb-6">
+                                <p class="mb-2"><i class="fas fa-envelope mr-2"></i><span class="email-field">email@example.com</span></p>
+                                <p><i class="fas fa-phone mr-2"></i><span class="phone-field">123-456-7890</span></p>
+                            </div>
+                            
+                            <h3 class="text-lg font-bold mb-2">Skills</h3>
+                            <div class="skills-field">
+                                <p>Your skills will appear here.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="main-content">
+                            <h2>Work Experience</h2>
+                            <div class="workExperience-field mb-6">
+                                <p>Your work experience will appear here.</p>
+                            </div>
+                            
+                            <h2>Education</h2>
+                            <div class="education-field">
+                                <p>Your education will appear here.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- London Template -->
+                    <div id="londonTemplate" class="resume-template london hidden">
+                        <div class="header">
+                            <img id="londonProfileImg" class="profile-img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="Profile Image">
+                            <h1 class="text-2xl font-bold fullName-field">Your Name</h1>
+                            <p class="text-xl jobTitle-field">Your Job Title</p>
+                            <div class="mt-2">
+                                <span class="email-field">email@example.com</span> | <span class="phone-field">123-456-7890</span>
+                            </div>
+                        </div>
+                        
+                        <div class="content">
+                            <h2>Work Experience</h2>
+                            <div class="workExperience-field mb-6">
+                                <p>Your work experience will appear here.</p>
+                            </div>
+                            
+                            <h2>Education</h2>
+                            <div class="education-field mb-6">
+                                <p>Your education will appear here.</p>
+                            </div>
+                            
+                            <h2>Skills</h2>
+                            <div class="skills-field">
+                                <p>Your skills will appear here.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Colorful Template -->
+                    <div id="colorfulTemplate" class="resume-template colorful hidden">
+                        <div class="header">
+                            <img id="colorfulProfileImg" class="profile-img" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="Profile Image">
+                            <div>
+                                <h1 class="text-2xl font-bold fullName-field">Your Name</h1>
+                                <p class="text-xl jobTitle-field">Your Job Title</p>
+                                <div class="mt-2">
+                                    <p><i class="fas fa-envelope mr-2"></i><span class="email-field">email@example.com</span></p>
+                                    <p><i class="fas fa-phone mr-2"></i><span class="phone-field">123-456-7890</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="content">
+                            <h2>Work Experience</h2>
+                            <div class="workExperience-field mb-6">
+                                <p>Your work experience will appear here.</p>
+                            </div>
+                            
+                            <h2>Education</h2>
+                            <div class="education-field mb-6">
+                                <p>Your education will appear here.</p>
+                            </div>
+                            
+                            <h2>Skills</h2>
+                            <div class="skills-field">
+                                <p>Your skills will appear here.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="coverLetterPreview" class="preview-box">
+                    <div class="cover-letter">
+                        <div class="sender-info">
+                            <p class="fullName-field font-bold">Your Name</p>
+                            <p class="email-field">email@example.com</p>
+                            <p class="phone-field">123-456-7890</p>
+                        </div>
+                        
+                        <div class="date">
+                            <p id="currentDate">Date</p>
+                        </div>
+                        
+                        <div class="recipient-info">
+                            <p>Hiring Manager</p>
+                            <p>Company Name</p>
+                        </div>
+                        
+                        <div class="content">
+                            <p>Dear Hiring Manager,</p>
+                            <br>
+                            <div id="coverLetterContent" contenteditable="true">
+                                <p>I am writing to express my interest in the <span class="jobTitle-field">position</span> role at your company. With my background in relevant fields and a passion for excellence, I believe I would be a valuable addition to your team.</p>
+                                <br>
+                                <p>Throughout my career, I have developed strong skills in various areas that align with this position's requirements. I am confident that my experience and dedication would allow me to make significant contributions to your organization.</p>
+                                <br>
+                                <p>I look forward to the opportunity to discuss how my background, skills, and enthusiasm could benefit your team. Thank you for considering my application.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="signature">
+                            <p>Sincerely,</p>
+                            <br>
+                            <p class="fullName-field font-bold">Your Name</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-center space-x-4 mb-10">
+                <button id="downloadResumeBtn" class="action-button">Download Resume as PDF</button>
+                <button id="downloadCoverLetterBtn" class="action-button">Download Cover Letter as PDF</button>
+            </div>
+        </div>
+        
+        <!-- FAQ Section for SEO -->
+        <div class="faq-section">
+            <h2 class="text-2xl font-bold mb-6 text-center">Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">Is this resume builder really free to use?</div>
+                <p>Yes, our AI-powered resume builder is completely free to use with no hidden charges. You can create, edit, and download as many resumes and cover letters as you need.</p>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">How does the AI help with my resume?</div>
+                <p>Our AI analyzes your input and job description (if provided) to suggest optimal phrasing, highlight relevant skills, and tailor your resume and cover letter to stand out to employers.</p>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Can I edit my resume after generating it?</div>
+                <p>Absolutely! All generated resumes and cover letters are fully editable. You can make changes directly in the preview before downloading.</p>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">What file formats can I download my resume in?</div>
+                <p>Currently, we support PDF downloads which is the most widely accepted format for job applications. PDFs maintain your formatting across different devices and systems.</p>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Is my personal information secure?</div>
+                <p>Yes, we take privacy seriously. All processing happens in your browser - we don't store your personal information on our servers.</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; padding: 20px; font-family: 'Poppins', sans-serif; margin-top: 30px; background-color: #f8fafc; border-radius: 10px;">
+            <strong>Looking for job opportunities that match your new resume?</strong><br>
+            <a href="https://bit.ly/44iVHHX" target="_blank" class="text-indigo-600 hover:text-indigo-800">Find your dream job here</a>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize date for cover letter
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        
+        // Profile Image Upload
+        const imageUploadContainer = document.getElementById('imageUploadContainer');
+        const profileImageInput = document.getElementById('profileImageInput');
+        const profileImagePreview = document.getElementById('profileImagePreview');
+        const uploadIcon = document.getElementById('uploadIcon');
+        const uploadImageButton = document.getElementById('uploadImageButton');
+        
+        uploadImageButton.addEventListener('click', function() {
+            profileImageInput.click();
+        });
+        
+        profileImageInput.addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    profileImagePreview.src = e.target.result;
+                    profileImagePreview.classList.remove('hidden');
+                    uploadIcon.classList.add('hidden');
+                    
+                    // Update all template profile images
+                    document.getElementById('stockholmProfileImg').src = e.target.result;
+                    document.getElementById('torontoProfileImg').src = e.target.result;
+                    document.getElementById('londonProfileImg').src = e.target.result;
+                    document.getElementById('colorfulProfileImg').src = e.target.result;
+                };
+                
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+        
+        // Template Selection
+        const templatePreviews = document.querySelectorAll('.template-preview');
+        const resumeTemplates = document.querySelectorAll('.resume-template');
+        
+        templatePreviews.forEach(preview => {
+            preview.addEventListener('click', function() {
+                // Update active class on previews
+                templatePreviews.forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show selected template
+                const templateName = this.dataset.template;
+                resumeTemplates.forEach(template => {
+                    template.classList.add('hidden');
+                });
+                document.getElementById(`${templateName}Template`).classList.remove('hidden');
+            });
+        });
+        
+        // Tab Switching
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const previewBoxes = document.querySelectorAll('.preview-box');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                const tabName = this.dataset.tab;
+                previewBoxes.forEach(box => box.classList.remove('active'));
+                document.getElementById(tabName).classList.add('active');
+            });
+        });
+        
+        // Generate Button
+        const generateButton = document.getElementById('generateButton');
+        const previewSection = document.getElementById('previewSection');
+        
+        generateButton.addEventListener('click', function() {
+            // Get form values
+            const fullName = document.getElementById('fullName').value || 'Your Name';
+            const jobTitle = document.getElementById('jobTitle').value || 'Your Job Title';
+            const email = document.getElementById('email').value || 'email@example.com';
+            const phone = document.getElementById('phone').value || '123-456-7890';
+            const workExperience = document.getElementById('workExperience').value || 'Your work experience will appear here.';
+            const education = document.getElementById('education').value || 'Your education will appear here.';
+            const skills = document.getElementById('skills').value ||
